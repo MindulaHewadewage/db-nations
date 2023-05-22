@@ -16,9 +16,9 @@ public class Main {
 
 public static void main(String[] args) {
 		
-		String url = "jdbc:mysql://localhost:3306/db-aereoporto";
+		String url = "jdbc:mysql://localhost:3306/nations";
 		String user = "root";
-		String password = "code";
+		String password = "root";
 		
 		try (Connection con = DriverManager.getConnection(url, user, password)){
 			
