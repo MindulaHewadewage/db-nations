@@ -20,11 +20,8 @@ public static void main(String[] args) {
 		String user = "root";
 		String password = "code";
 		
-		try (Scanner sc = new Scanner(System.in);
-				Connection con = DriverManager.getConnection(url, user, password)){
+		try (Connection con = DriverManager.getConnection(url, user, password)){
 			
-			System.out.print("Ricerca passeggeri per cognome: ");
-			String searchLastname = sc.nextLine();
 		    
 			String sql = "SELECT countries.name,countries.country_id,regions.name,continents.name"
 					+"FROM countries"
@@ -39,35 +36,32 @@ public static void main(String[] args) {
 			
 			try (PreparedStatement  ps = con.prepareStatement(sql)) {
 				
-				ps.setString(1, searchLastname);
-				
 				try (ResultSet  rs = ps.executeQuery()) {
 					
 					while(rs.next()) {
 						
-						final int id = rs.getInt(1);
-						final String name = rs.getString(2);
-						final String lastname = rs.getString(3);
-						final Date dateOfBirth = rs.getDate(4);
+						final String name = rs.getString(1);
+						final int id = rs.getInt(2);
+						final String region = rs.getString(3);
+						final String continent= rs.getString(4);
 						
-						System.out.println(id + " - " + name + " - " 
-								+ lastname + " - " + dateOfBirth);
+						System.out.println(name + "-"+id+"-"+region+"-"+continent);
 					}
-				}				
+						
+				} catch (SQLException ex) {
+					System.err.println("ERROR");
+				}
+
 			} catch (SQLException ex) {
-				System.err.println("Query not well formed");
+				System.err.println("Query Error");
 			}
-		} catch (SQLException ex) {
-			System.err.println("Error during connection to db");
+
+		}catch (SQLException ex){
+			System.err.println("Connection error");
 		}
-	}
-	
-	public static LocalDateTime  getLocalDateTime(Timestamp time) {
-		
-		return LocalDateTime
-				.ofInstant(Instant.ofEpochMilli(time.getTime()), 
-						TimeZone .getDefault().toZoneId());  
-	}
-
-
 }
+}
+	  
+
+
+
