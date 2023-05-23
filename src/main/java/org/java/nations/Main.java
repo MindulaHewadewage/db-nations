@@ -20,7 +20,8 @@ public static void main(String[] args) {
 		String user = "root";
 		String password = "root";
 		
-		try (Connection con = DriverManager.getConnection(url, user, password)){
+		try (Scanner sc =new Scanner(System.in);
+				Connection con = DriverManager.getConnection(url, user, password)){
 			
 		    
 			String sql = "SELECT countries.name,countries.country_id,regions.name,continents.name"
@@ -36,6 +37,10 @@ public static void main(String[] args) {
 			
 			try (PreparedStatement  ps = con.prepareStatement(sql)) {
 				
+				System.out.println("Parametro di ricerca:");
+				String searchValue =sc.nextLine();
+				
+				ps.setString(1,"%"+ searchValue+"%");
 				try (ResultSet  rs = ps.executeQuery()) {
 					
 					while(rs.next()) {
